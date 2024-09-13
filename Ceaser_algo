@@ -1,0 +1,74 @@
+letters = 'abcdefghijklmnopqrstuvwxyz'
+num_letters = len(letters)
+
+def encrypt(plaintext, key):
+    ciphertext = ''
+    for letter in plaintext:
+        if letter.lower() in letters:
+            # Determine if letter is uppercase
+            is_upper = letter.isupper()
+            # Convert letter to lowercase for index lookup
+            letter_lower = letter.lower()
+            index = letters.index(letter_lower)
+            # Calculate new index with wrap-around
+            new_index = (index + key) % num_letters
+            # Get the encrypted letter
+            encrypted_letter = letters[new_index]
+            # Convert back to uppercase if needed
+            if is_upper:
+                encrypted_letter = encrypted_letter.upper()
+            ciphertext += encrypted_letter
+        else:
+            # Preserve spaces and other non-alphabetic characters
+            ciphertext += letter
+    return ciphertext
+
+def decrypt(ciphertext, key):
+    plaintext = ''
+    for letter in ciphertext:
+        if letter.lower() in letters:
+            # Determine if letter is uppercase
+            is_upper = letter.isupper()
+            # Convert letter to lowercase for index lookup
+            letter_lower = letter.lower()
+            index = letters.index(letter_lower)
+            # Calculate new index with wrap-around
+            new_index = (index - key) % num_letters
+            # Get the decrypted letter
+            decrypted_letter = letters[new_index]
+            # Convert back to uppercase if needed
+            if is_upper:
+                decrypted_letter = decrypted_letter.upper()
+            plaintext += decrypted_letter
+        else:
+            # Preserve spaces and other non-alphabetic characters
+            plaintext += letter
+    return plaintext
+
+print('***CAESAR CIPHER PROGRAM ***')
+print()
+print('Do you want to encrypt or decrypt?')
+user_input = input('e/d: ').strip().lower()
+
+if user_input == 'e':
+    print('ENCRYPTION MODE SELECTED')
+    print()
+    key = int(input('Enter the key (1 through 26): '))
+    if key < 1 or key > 26:
+        print('Invalid key. Please enter a number between 1 and 26.')
+    else:
+        text = input('Enter the text to encrypt: ')
+        ciphertext = encrypt(text, key)
+        print(f'CIPHERTEXT: {ciphertext}')
+
+
+if user_input == 'd':
+    print('DECRYPTION MODE SELECTED')
+    print()
+    key = int(input('Enter the key (1 through 26): '))
+    if key < 1 or key > 26:
+        print('Invalid key. Please enter a number between 1 and 26.')
+    else:
+        text = input('Enter the text to decrypt: ')
+        plaintext = decrypt(text, key)
+        print(f'PLAINTEXT: {plaintext}')
